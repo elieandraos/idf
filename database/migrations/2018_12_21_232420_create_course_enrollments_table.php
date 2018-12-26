@@ -17,6 +17,7 @@ class CreateCourseEnrollmentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('score')->default(0)->index();
             $table->timestamps();
 
             $table->foreign('course_id')->references('id')->on('courses');

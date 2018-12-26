@@ -14,6 +14,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class CourseEnrollment extends Model
 {
+	protected $table = 'course_enrollments';
+	
+	/**
+     * The attributes that are mass assignable.
+     * @var array
+     */
+    protected $fillable = [
+    	'course_id', 'user_id', 'score'
+    ];
+
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);

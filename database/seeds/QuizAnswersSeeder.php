@@ -58,10 +58,17 @@ class QuizAnswersSeeder extends Seeder
         $quizzesToGenerateAnswers = $allQuizesFromCourse->take(random_int(0, $allQuizesFromCourse->count()));
 
         $quizzesToGenerateAnswers->each(function (Quiz $quiz) use ($enrollment) {
+            $quizScore = random_int(0, $quiz->max_score);
+
             factory(QuizAnswer::class)->create([
                 'quiz_id' => $quiz->id,
                 'user_id' => $enrollment->user->id,
-                'score' => random_int(0, $quiz->max_score),
+                'course_id' => $quiz->lesson->course->id,
+                'score' => $quizScore,
+            ]);
+
+            $enrollment->update([
+                'score' => $enrollment->score + $quizScore
             ]);
         });
     }

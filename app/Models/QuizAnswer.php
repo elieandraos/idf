@@ -10,6 +10,14 @@ class QuizAnswer extends Model
 {
 	protected $table = 'quiz_answers';
 	
+	/**
+     * The attributes that are mass assignable.
+     * @var array
+     */
+    protected $fillable = [
+        'quiz_id', 'user_id', 'course_id', 'answer', 'score'
+    ];
+
 	public function quiz(): BelongsTo
     {
         return $this->belongsTo(Quiz::class);
