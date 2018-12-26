@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Course;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -12,4 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Lesson extends Model
 {
+	public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class);
+    }
 }
