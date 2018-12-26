@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Course;
-use App\CourseEnrollment;
+use App\Models\Course;
+use App\Models\CourseEnrollment;
 use Illuminate\Contracts\Support\Renderable;
 
 class CourseEnrollmentController extends Controller

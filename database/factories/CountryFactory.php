@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Country;
 use Faker\Generator as Faker;
 
 /*
@@ -13,7 +14,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Country::class, function (Faker $faker) {
+$factory->define(Country::class, function (Faker $faker) {
     return [
         'name' => $faker->country,
         'iso3_code' => $faker->countryISOAlpha3,

@@ -1,6 +1,12 @@
 <?php
 
+use App\Models\Quiz;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\Lesson;
+use App\Models\QuizAnswer;
 use Faker\Generator as Faker;
+use App\Models\CourseEnrollment;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +19,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Course::class, function (Faker $faker) {
+$factory->define(Course::class, function (Faker $faker) {
     $words = [
         'Design',
         'Thinking',
@@ -39,7 +45,7 @@ $factory->define(App\Course::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(\App\Lesson::class, function (Faker $faker) {
+$factory->define(Lesson::class, function (Faker $faker) {
     return [
 //        'course_id',
         'title' => $faker->sentence,
@@ -47,18 +53,18 @@ $factory->define(\App\Lesson::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\CourseEnrollment::class, function (Faker $faker) {
+$factory->define(CourseEnrollment::class, function (Faker $faker) {
     return [
         'course_id' => function () {
-            return factory(\App\Course::class)->lazy()->getKey();
+            return factory(Course::class)->lazy()->getKey();
         },
         'user_id' => function () {
-            return factory(\App\User::class)->lazy()->getKey();
+            return factory(User::class)->lazy()->getKey();
         },
     ];
 });
 
-$factory->define(\App\Quiz::class, function (Faker $faker) {
+$factory->define(Quiz::class, function (Faker $faker) {
     return [
 //        'lesson_id',
         'max_score' => random_int(5, 10),
@@ -66,7 +72,7 @@ $factory->define(\App\Quiz::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\QuizAnswer::class, function (Faker $faker) {
+$factory->define(QuizAnswer::class, function (Faker $faker) {
     return [
 //        'quiz_id',
 //        'user_id',

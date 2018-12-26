@@ -1,10 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Models\Country;
+use App\Models\CourseEnrollment;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**

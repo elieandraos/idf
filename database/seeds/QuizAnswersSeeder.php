@@ -1,10 +1,12 @@
 <?php
 
-use App\CourseEnrollment;
-use App\Quiz;
-use App\QuizAnswer;
-use App\User;
+use App\Models\Quiz;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\Country;
+use App\Models\QuizAnswer;
 use Illuminate\Database\Seeder;
+use App\Models\CourseEnrollment;
 
 class QuizAnswersSeeder extends Seeder
 {
@@ -17,8 +19,8 @@ class QuizAnswersSeeder extends Seeder
 
     public function __construct()
     {
-        $this->countryIds = \App\Country::all(['id'])->pluck('id');
-        $this->courseIds = \App\Course::all(['id'])->pluck('id');
+        $this->countryIds = Country::all(['id'])->pluck('id');
+        $this->courseIds = Course::all(['id'])->pluck('id');
     }
 
     /**

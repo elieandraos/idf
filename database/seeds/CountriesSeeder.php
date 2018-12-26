@@ -11,7 +11,7 @@ class CountriesSeeder extends Seeder
     public function run(): void
     {
         for ($i = 0; $i < 10; $i++) {
-            factory(\App\Country::class)->create();
+            factory(\App\Models\Country::class)->create();
         }
     }
 }

@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App;
+namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Quiz;
+use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
