@@ -11,10 +11,9 @@ class CourseEnrollmentController extends Controller
 {
     public function show(Request $request, string $slug): Renderable
     {
-        $enrollment = $request->courseEnrollment;
-
         return view('courseEnrollment', [
-            'enrollment' => $enrollment,
+            'enrollment' => $request->courseEnrollment,
+            'course' => $request->course,
         ]);
     }
 }

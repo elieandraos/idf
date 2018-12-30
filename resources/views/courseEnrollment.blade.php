@@ -13,7 +13,7 @@
                     <h2 class="card-header">Lessons</h2>
                     <div class="card-body">
                         <ol>
-                            @foreach($enrollment->course->lessons as $lesson)
+                            @foreach($course->lessons as $lesson)
                                 <li>{{ $lesson->title }}</li>
                             @endforeach
                         </ol>

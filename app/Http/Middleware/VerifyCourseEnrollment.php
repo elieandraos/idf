@@ -21,7 +21,7 @@ class VerifyCourseEnrollment
         $slug = $request->route('slug');
 
         // verify the course exists
-        $course = Course::where('slug', $slug)->first() ?? abort(404, 'Unknown course');
+        $course = Course::with('lessons')->where('slug', $slug)->first() ?? abort(404, 'Unknown course');
 
         // verify the user is enrolled in the course
         $enrollment = CourseEnrollment::where('course_id', $course->id)
