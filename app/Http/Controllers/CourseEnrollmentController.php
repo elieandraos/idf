@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use Illuminate\Http\Request;
 use App\Models\CourseEnrollment;
 use Illuminate\Contracts\Support\Renderable;
 
 class CourseEnrollmentController extends Controller
 {
-    public function show(string $slug): Renderable
+    public function show(Request $request, string $slug): Renderable
     {
-        $course = Course::where('slug', $slug)->first() ?? abort(404, 'Unknown course');
-        $enrollment = CourseEnrollment::where('course_id', $course->id)
-            ->where('user_id', auth()->id())
-            ->first() ?? abort(404, 'You are not enrolled to this course');
+        $enrollment = $request->courseEnrollment;
 
         return view('courseEnrollment', [
             'enrollment' => $enrollment,

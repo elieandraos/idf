@@ -23,4 +23,4 @@ Route::get('/home', 'HomeController@index')
 
 Route::get('/courses/{slug}', 'CourseEnrollmentController@show')
     ->name('courseEnrollments.show')
-    ->middleware('auth');
+    ->middleware(['auth', 'verify-course-enrollment']);
