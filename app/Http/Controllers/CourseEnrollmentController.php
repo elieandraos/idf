@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\CourseEnrollment;
 use Illuminate\Contracts\Support\Renderable;
+use App\Http\Resources\CourseEnrollmentResource;
 
 class CourseEnrollmentController extends Controller
 {
-    public function show(Request $request, string $slug): Renderable
+    public function show(Request $request, string $slug)
     {
+        $course = $request->course;
+        $courseEnrollment = $request->courseEnrollment;
+
+        $enrollmentsWorldwide = CourseEnrollment::with('user')->displayRank()->where('course_id', $course->id)->orderBy('score', 'DESC')->get();
+        // dd( $enrollmentsWorldwide );
+        
         return view('courseEnrollment', [
-            'enrollment' => $request->courseEnrollment,
-            'course' => $request->course,
+            'course' => $course,
         ]);
     }
 }
