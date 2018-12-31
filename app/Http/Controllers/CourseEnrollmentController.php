@@ -9,25 +9,31 @@ use App\Services\EloquentLeaderboard\CourseEnrollmentLeaderboard;
 
 class CourseEnrollmentController extends Controller
 {
-    protected $courseEnrollmentLeaderboard;
-
-    public function __construct(CourseEnrollmentLeaderboard $courseEnrollmentLeaderboard)
-    {
-        $this->courseEnrollmentLeaderboard = $courseEnrollmentLeaderboard;
-    }
 
     public function show(Request $request, string $slug) : Renderable
     {
         $course = $request->course;
         $courseEnrollment = $request->courseEnrollment;
 
-        $enrollmentsWorldwide = CourseEnrollment::with('user')->where('course_id', $course->id)->get();
-        $enrollmentsLeaderboardWorldwide = $this->courseEnrollmentLeaderboard->setCollection($enrollmentsWorldwide);
+        $enrollmentsWorldwide = CourseEnrollment::with('user')
+                                            ->where('course_id', $course->id)
+                                            ->get();
+
+        $enrollmentsCountry = CourseEnrollment::with('user')
+                                            ->whereHas('user', function($query) {
+                                                $query->where('country_id', auth()->user()->country_id);
+                                            })->where('course_id', $course->id)
+                                            ->get();
+
+        $enrollmentsLeaderboardCountry = new CourseEnrollmentLeaderboard($enrollmentsCountry);
+        $enrollmentsLeaderboardWorldwide = new CourseEnrollmentLeaderboard($enrollmentsWorldwide);
         
         return view('courseEnrollment', [
             'course' => $course,
             'leaderboardWorldwide' => $enrollmentsLeaderboardWorldwide->getLeaderBoard(),
-            'leaderboardWorldwideRank' => $enrollmentsLeaderboardWorldwide->getUserRank()
+            'leaderboardWorldwideRank' => $enrollmentsLeaderboardWorldwide->getUserRank(),
+            'leaderboardCountry' => $enrollmentsLeaderboardCountry->getLeaderBoard(),
+            'leaderboardCountryRank' => $enrollmentsLeaderboardCountry->getUserRank(),
         ]);
     }
 }

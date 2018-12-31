@@ -4,13 +4,12 @@ namespace App\Services\EloquentLeaderboard;
 
 use App\Models\CourseEnrollment;
 use Illuminate\Support\Collection;
+use App\Services\EloquentLeaderboard\EloquentLeaderboard;
 use App\Services\EloquentLeaderboard\EloquentLeaderboardInterface;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
-class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
+class CourseEnrollmentLeaderboard extends EloquentLeaderboard implements EloquentLeaderboardInterface
 {
-	protected $collection;
-
 	/**
 	 * Filter the given collection to get only CourseEnrollment model items
 	 * For each model item:
@@ -27,9 +26,9 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 	 * @param Collection $collection 
 	 * @return type
 	 */
-	public function setCollection(EloquentCollection $collection) : EloquentLeaderboardInterface
+	public function handleCollection(EloquentCollection $collection) : Collection
 	{
-		$this->collection = $collection->whereInstanceOf('App\Models\CourseEnrollment')
+		return $collection->whereInstanceOf('App\Models\CourseEnrollment')
 										->map(function($item, $key){
 								            $item['is_logged_user'] = ( $item['user_id'] == auth()->id() ) ? 1 : 0;
 								            return $item;
@@ -48,29 +47,23 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 								            $item['user_rank'] = $key + 1;
 								            return $item;
 								        });
-		return $this;
-	}
-
-	public function getChunkSize() : int
-	{
-		return 3;
 	}
 
 	public function getTopChunk() : Collection
 	{
-		return $this->collection->take( $this->getChunkSize() );
+		return $this->getCollection()->take( $this->getChunkSize() );
 	}
 
 	public function getMiddleChunk() : Collection
 	{
 		$median = $this->getMedian( $this->getUserRank() );
-		return $this->collection->whereBetween( 'user_rank', [$median -1, $median + 1]);
+		return $this->getCollection()->whereBetween( 'user_rank', [$median -1, $median + 1]);
 	}
 
 	public function getBottomChunk() : Collection
 	{
 		$size = $this->getChunkSize() * -1;
-		return $this->collection->take( $size );
+		return $this->getCollection()->take( $size );
 	}
 
 	public function getLeaderboard( ) : Collection
@@ -87,7 +80,7 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 	private function getMedian(int $userRank) : int
 	{
 		if(!$this->userHasMiddleRank($userRank))
-			return (int) floor($this->collection->count() / 2);
+			return (int) floor($this->getCollection()->count() / 2);
 		else if($this->userHasMiddleRank($userRank) && !$this->userIsAtLastMiddleRank($userRank)) 
 			return $userRank;
 		else
@@ -102,7 +95,7 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 	 */
 	private function userHasMiddleRank( int $userRank ) : bool
 	{
-		$bottomRankMax = $this->collection->count() + 1;
+		$bottomRankMax = $this->getCollection()->count() + 1;
 		$bottomRankMin = $bottomRankMax - $this->getChunkSize();
 		return ( $userRank > $this->getChunkSize() && $userRank < $bottomRankMin) ? true : false;
 	}
@@ -115,7 +108,7 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 	 */
 	private function userIsAtLastMiddleRank(int $userRank) : bool
 	{
-		$bottomRankMax = $this->collection->count() + 1;
+		$bottomRankMax = $this->getCollection()->count() + 1;
 		$bottomRankMin = $bottomRankMax - ( $this->getChunkSize() + 1 );
 		return ( $userRank == $bottomRankMin ) ? true : false;
 	}
@@ -127,7 +120,7 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 	 */
 	private function getUserCourseEnrollment() : CourseEnrollment
 	{
-		return $this->collection->where('is_logged_user', 1)->first();
+		return $this->getCollection()->where('is_logged_user', 1)->first();
 	}
 
 	/**

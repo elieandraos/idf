@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
  */
 interface EloquentLeaderboardInterface  
 {
-	public function setCollection(EloquentCollection $collection) : EloquentLeaderboardInterface;
-	public function getChunkSize() : int;
 	public function getTopChunk() : Collection;
 	public function getBottomChunk() : Collection;
 	public function getMiddleChunk() : Collection;
