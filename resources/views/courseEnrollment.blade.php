@@ -172,8 +172,7 @@
 
                             </div>
                             <div class="col-md-6">
-                                <h4>You are ranked <b>90th</b> Worldwide</h4>
-                                {{--Replace this stub markup by your code--}}
+                                <h4>You are ranked <b>{!! $leaderboardWorldwideRank !!}</b> Worldwide</h4>
                                 <ul style="padding: 0px;">
                                     @foreach($leaderboardWorldwide as $key => $item)
                                         <li class="courseRanking__rankItem"

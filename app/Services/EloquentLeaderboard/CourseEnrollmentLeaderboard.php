@@ -63,9 +63,7 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 
 	public function getMiddleChunk() : Collection
 	{
-		$userCourseEnrollment = $this->collection->where('is_logged_user', 1)->first();
-		$userRank = $userCourseEnrollment->user_rank;
-		$median = $this->getMedian($userRank);
+		$median = $this->getMedian( $this->getUserRank() );
 		return $this->collection->whereBetween( 'user_rank', [$median -1, $median + 1]);
 	}
 
@@ -82,6 +80,7 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 
 	/**
 	 * Get the median index for the middle chunk
+	 * 
 	 * @param int $userRank 
 	 * @return int
 	 */
@@ -119,5 +118,26 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 		$bottomRankMax = $this->collection->count() + 1;
 		$bottomRankMin = $bottomRankMax - ( $this->getChunkSize() + 1 );
 		return ( $userRank == $bottomRankMin ) ? true : false;
+	}
+
+	/**
+	 * Return the logged in user course enrollment
+	 * 
+	 * @return CourseEnrollment
+	 */
+	private function getUserCourseEnrollment() : CourseEnrollment
+	{
+		return $this->collection->where('is_logged_user', 1)->first();
+	}
+
+	/**
+	 * Get the logged in user rank in the current collection
+	 * 
+	 * @return int
+	 */
+	public function getUserRank() : int
+	{
+		$userCourseEnrollment = $this->getUserCourseEnrollment();
+		return $userCourseEnrollment->user_rank;
 	}
 }

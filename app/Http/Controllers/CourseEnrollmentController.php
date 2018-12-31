@@ -22,11 +22,12 @@ class CourseEnrollmentController extends Controller
         $courseEnrollment = $request->courseEnrollment;
 
         $enrollmentsWorldwide = CourseEnrollment::with('user')->where('course_id', $course->id)->get();
-        $leaderboardWorldwide = $this->courseEnrollmentLeaderboard->setCollection($enrollmentsWorldwide)->getLeaderBoard();
+        $enrollmentsLeaderboardWorldwide = $this->courseEnrollmentLeaderboard->setCollection($enrollmentsWorldwide);
         
         return view('courseEnrollment', [
             'course' => $course,
-            'leaderboardWorldwide' => $leaderboardWorldwide
+            'leaderboardWorldwide' => $enrollmentsLeaderboardWorldwide->getLeaderBoard(),
+            'leaderboardWorldwideRank' => $enrollmentsLeaderboardWorldwide->getUserRank()
         ]);
     }
 }
