@@ -79,7 +79,7 @@ class CourseEnrollmentLeaderboard extends EloquentLeaderboard implements Eloquen
 	 */
 	private function getMedian(int $userRank) : int
 	{
-		if(!$this->userHasMiddleRank($userRank))
+		if(!$userRank || !$this->userHasMiddleRank($userRank))
 			return (int) floor($this->getCollection()->count() / 2);
 		else if($this->userHasMiddleRank($userRank) && !$this->userIsAtLastMiddleRank($userRank)) 
 			return $userRank;
@@ -131,6 +131,6 @@ class CourseEnrollmentLeaderboard extends EloquentLeaderboard implements Eloquen
 	public function getUserRank() : int
 	{
 		$userCourseEnrollment = $this->getUserCourseEnrollment();
-		return $userCourseEnrollment->user_rank;
+		return ($userCourseEnrollment) ? $userCourseEnrollment->user_rank : 0;
 	}
 }
