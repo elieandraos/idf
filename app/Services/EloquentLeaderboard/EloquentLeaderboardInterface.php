@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 /**
  * Gamify any eloquent model.
  * 
- * Returns top/middle/bottom chunks from a given eloquent model collection
+ * Now, we can gamify Users with most enrolled courses, or Courses with most enrolled users etc...
+ * All of them will have the same defined contracts accoring to our custom gamification logic.
+ * 
  */
 interface EloquentLeaderboardInterface  
 {

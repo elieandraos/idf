@@ -16,7 +16,7 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 	 * For each model item:
 	 * 
 	 * - Add a field 'is_logged_user' to indicate if this is the logged in user
-	 * - Sort by the is_logged_user DESC (logged in user will always on be top in case of tie score with other users)
+	 * - Sort by the 'score' DESC then 'is_logged_user' DESC (logged in user will always on be top in case of tie score with other users)
 	 * - map again the sorted collection and add a field 'user_rank'
 	 * 
 	 * Adding 'is_logged_user' and 'user_rank' virtually on the collection will avoid slow query execution time.  
