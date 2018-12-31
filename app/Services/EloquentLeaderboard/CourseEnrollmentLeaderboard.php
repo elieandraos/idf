@@ -34,10 +34,16 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 								            $item['is_logged_user'] = ( $item['user_id'] == auth()->id() ) ? 1 : 0;
 								            return $item;
 								        })
-								        ->sortByMulti([
-								        	'score' => 'DESC',
-								        	'is_logged_user' => 'DESC',
-								        ])
+								        ->sort(function($a, $b) {
+										   if($a->score === $b->score) {
+										     if($a->is_logged_user === $b->is_logged_user) {
+										       return 0;
+										     }
+										     return $a->is_logged_user < $b->is_logged_user ? 1 : -1;
+										   } 
+										   return $a->score < $b->score ? 1 : -1;
+										})
+										->values()
 								        ->map(function($item, $key){
 								            $item['user_rank'] = $key + 1;
 								            return $item;
@@ -77,7 +83,7 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 
 	private function userHasMiddleRank( $userRank )
 	{
-		$lastBottomRank = $this->collection->count() - $this->getChunkSize();
+		$lastBottomRank = ($this->collection->count() + 1) - $this->getChunkSize();
 		return ( $userRank > $this->getChunkSize() && $userRank < $lastBottomRank) ? true : false;
 	}
 }
