@@ -65,8 +65,7 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 	{
 		$userCourseEnrollment = $this->collection->where('is_logged_user', 1)->first();
 		$userRank = $userCourseEnrollment->user_rank;
-
-		$median = ( $this->userHasMiddleRank($userRank) ) ? $userRank : (int) floor($this->collection->count() / 2);
+		$median = $this->getMedian($userRank);
 		return $this->collection->whereBetween( 'user_rank', [$median -1, $median + 1]);
 	}
 
@@ -81,9 +80,44 @@ class CourseEnrollmentLeaderboard implements EloquentLeaderboardInterface
 		return  $this->getTopChunk()->merge($this->getMiddleChunk())->merge($this->getBottomChunk());
 	}
 
-	private function userHasMiddleRank( $userRank )
+	/**
+	 * Get the median index for the middle chunk
+	 * @param int $userRank 
+	 * @return int
+	 */
+	private function getMedian(int $userRank) : int
 	{
-		$lastBottomRank = ($this->collection->count() + 1) - $this->getChunkSize();
-		return ( $userRank > $this->getChunkSize() && $userRank < $lastBottomRank) ? true : false;
+		if(!$this->userHasMiddleRank($userRank))
+			return (int) floor($this->collection->count() / 2);
+		else if($this->userHasMiddleRank($userRank) && !$this->userIsAtLastMiddleRank($userRank)) 
+			return $userRank;
+		else
+			return $userRank - 1;
+	}
+
+	/**
+	 * Check if the user rank belongs to the middle chunk
+	 * 
+	 * @param int $userRank 
+	 * @return bool
+	 */
+	private function userHasMiddleRank( int $userRank ) : bool
+	{
+		$bottomRankMax = $this->collection->count() + 1;
+		$bottomRankMin = $bottomRankMax - $this->getChunkSize();
+		return ( $userRank > $this->getChunkSize() && $userRank < $bottomRankMin) ? true : false;
+	}
+
+	/**
+	 * Check if the user rank is the last one in the middle chunk
+	 * 
+	 * @param int $userRank 
+	 * @return bool
+	 */
+	private function userIsAtLastMiddleRank(int $userRank) : bool
+	{
+		$bottomRankMax = $this->collection->count() + 1;
+		$bottomRankMin = $bottomRankMax - ( $this->getChunkSize() + 1 );
+		return ( $userRank == $bottomRankMin ) ? true : false;
 	}
 }
