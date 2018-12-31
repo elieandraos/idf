@@ -5,17 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CourseEnrollment;
 use Illuminate\Contracts\Support\Renderable;
-use App\Http\Resources\CourseEnrollmentResource;
+use App\Services\EloquentLeaderboard\CourseEnrollmentLeaderboard;
 
 class CourseEnrollmentController extends Controller
 {
-    public function show(Request $request, string $slug)
+    protected $courseEnrollmentLeaderboard;
+
+    public function __construct(CourseEnrollmentLeaderboard $courseEnrollmentLeaderboard)
+    {
+        $this->courseEnrollmentLeaderboard = $courseEnrollmentLeaderboard;
+    }
+
+    public function show(Request $request, string $slug) : Renderable
     {
         $course = $request->course;
         $courseEnrollment = $request->courseEnrollment;
 
-        $enrollmentsWorldwide = CourseEnrollment::with('user')->displayRank()->where('course_id', $course->id)->orderBy('score', 'DESC')->get();
-        // dd( $enrollmentsWorldwide );
+        $enrollmentsWorldwide = CourseEnrollment::with('user')->where('course_id', $course->id)->get();
+        $leaderboard = $this->courseEnrollmentLeaderboard->setCollection($enrollmentsWorldwide)->getLeaderBoard();
         
         return view('courseEnrollment', [
             'course' => $course,

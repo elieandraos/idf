@@ -6,6 +6,7 @@ use DB;
 use App\Models\User;
 use App\Models\Course;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -33,11 +34,5 @@ class CourseEnrollment extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function scopeDisplayRank($query)
-    {
-        DB::statement(DB::raw('set @rownum=0'));
-        return $query->select('*')->addSelect( DB::raw('@rownum  := @rownum  + 1 AS user_rank') );
     }
 }
