@@ -24,7 +24,7 @@
                         <leaderboard :items="data.leaderboardCountry"></leaderboard>
                     </div>
                      <div class="col-md-6">
-                        <h4>You are ranked <b>#{{ data.leaderboardWorldwideRank }}</b> Worldwide</h4>
+                        <h4>You are ranked <b>#{{ data.leaderboardWorldwideRank }}</b> worldwide</h4>
                         <leaderboard :items="data.leaderboardWorldwide"></leaderboard>
                     </div>
                 </div>

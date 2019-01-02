@@ -67,6 +67,18 @@
                     </form>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-header">Random Emails to test with</div>
+
+                <div class="card-body">
+                    <ul>
+                        @foreach($randomEmails as $email)
+                            <li>{!! $email !!}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
