@@ -9570,3 +9570,23 @@ nav.navbar-laravel .navbar-brand,
 
 /** End Cards **/
 
+::-webkit-input-placeholder {
+  color: #CCC !important;
+  font-weight: normal;
+}
+
+:-ms-input-placeholder {
+  color: #CCC !important;
+  font-weight: normal;
+}
+
+::-ms-input-placeholder {
+  color: #CCC !important;
+  font-weight: normal;
+}
+
+::placeholder {
+  color: #CCC !important;
+  font-weight: normal;
+}
+

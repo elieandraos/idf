@@ -44,4 +44,11 @@ class CourseEnrollmentController extends Controller
             'leaderboardCountryRank' => $enrollmentsLeaderboardCountry->getUserRank()
         ]);
     }
+
+    public function updateScore(Request $request, string $slug)
+    {
+        $courseEnrollment = $request->courseEnrollment;
+        $courseEnrollment->update(['score' => $request->score]);
+        return response()->json(['status' => 'success']);
+    }
 }

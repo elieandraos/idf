@@ -53,6 +53,7 @@
     }
     .bold{
         font-weight: bold;
+        color: #000;
     }
     li:nth-child(3n) {
         border-bottom: 1px solid #eee;

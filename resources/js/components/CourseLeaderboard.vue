@@ -7,8 +7,16 @@
             </div>
             <div v-else>
                 <p>
-                    Your rankings improve every time you answer a question correctly.<br/>
+                    Your rankings improve every time you answer a question correctly.
                     Keep learning and earning course points to become one of our top learners!
+                </p>
+                <p>
+                    <input 
+                        v-on:keyup.enter="onEnter" 
+                        v-model="newScore"
+                        type="text" 
+                        placeholder="Simulate score update (Enter new number and hit enter)" class="form-control"
+                     />
                 </p>
                 <div class="row">
                     <div class="col-md-6">
@@ -36,18 +44,54 @@
             url: {
                 required: true,
                 type: String
+            },
+            userId: {
+                required: true,
+                type: Number
+            },
+            courseId: {
+                required: true,
+                type: Number
+            },
+            updateScoreUrl: {
+                required: true,
+                type: String
             }
         },
         data: () => ({
             loading: true,
-            data: {}
+            data: {},
+            newScore: null
         }),
+        computed: {
+            validScoreSimulation: function() {
+                return ( !parseInt(this.newScore) || parseInt(this.newScore) < 0 ) ? false : true;
+            }
+        },
         methods: {
             getStatistics() {
                 axios.get(this.url)
                 .then(response => {
                     this.loading = false;
                     this.data = response.data;
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+            },
+            onEnter(){
+                this.loading = true;
+                if( !this.validScoreSimulation )
+                {
+                    alert('You must enter a valid number');
+                    this.loading = false;
+                    return;
+                }
+                
+                axios.post(this.updateScoreUrl, { score: parseInt(this.newScore) })
+                .then(response => {
+                    this.getStatistics();
+                    this.newScore = null;
                 })
                 .catch(function(error){
                     console.log(error);

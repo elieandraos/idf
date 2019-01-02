@@ -28,3 +28,7 @@ Route::get('/courses/{slug}', 'CourseEnrollmentController@show')
 Route::get('/courses/{slug}/leaderboard', 'CourseEnrollmentController@leaderboard')
     ->name('courseEnrollments.leaderboard')
     ->middleware(['auth', 'verify-course-enrollment']);
+
+Route::post('/courses/{slug}/update-enrolled-user-score', 'CourseEnrollmentController@updateScore')
+    ->name('courseEnrollments.score-update')
+    ->middleware(['auth', 'verify-course-enrollment']);

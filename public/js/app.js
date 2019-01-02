@@ -1795,6 +1795,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1803,13 +1811,31 @@ __webpack_require__.r(__webpack_exports__);
     url: {
       required: true,
       type: String
+    },
+    userId: {
+      required: true,
+      type: Number
+    },
+    courseId: {
+      required: true,
+      type: Number
+    },
+    updateScoreUrl: {
+      required: true,
+      type: String
     }
   },
   data: function data() {
     return {
       loading: true,
-      data: {}
+      data: {},
+      newScore: null
     };
+  },
+  computed: {
+    validScoreSimulation: function validScoreSimulation() {
+      return !parseInt(this.newScore) || parseInt(this.newScore) < 0 ? false : true;
+    }
   },
   methods: {
     getStatistics: function getStatistics() {
@@ -1818,6 +1844,27 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.url).then(function (response) {
         _this.loading = false;
         _this.data = response.data;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    onEnter: function onEnter() {
+      var _this2 = this;
+
+      this.loading = true;
+
+      if (!this.validScoreSimulation) {
+        alert('You must enter a valid number');
+        this.loading = false;
+        return;
+      }
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.updateScoreUrl, {
+        score: parseInt(this.newScore)
+      }).then(function (response) {
+        _this2.getStatistics();
+
+        _this2.newScore = null;
       }).catch(function (error) {
         console.log(error);
       });
@@ -5837,7 +5884,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nul[data-v-77e85be2] {\n\t\tpadding: 0;\n}\n.courseRanking__rankItem[data-v-77e85be2]{\n        display: flex; \n        flex-direction: row; \n        padding: 10px;\n}\n.courseRanking__rankItem .position[data-v-77e85be2]{\n        font-size: 28px; \n        color: rgb(132, 132, 132); \n        text-align: right; \n        width: 80px; \n        padding-right: 10px;\n}\n.info[data-v-77e85be2]{\n        font-size: 16px;\n}\n.score[data-v-77e85be2]{\n        font-size: 10px; \n        color: rgb(132, 132, 132);\n}\n.bold[data-v-77e85be2]{\n        font-weight: bold;\n}\nli[data-v-77e85be2]:nth-child(3n) {\n        border-bottom: 1px solid #eee;\n}\nli[data-v-77e85be2]:nth-last-child(1){\n        border: none;\n}\n", ""]);
+exports.push([module.i, "\nul[data-v-77e85be2] {\n\t\tpadding: 0;\n}\n.courseRanking__rankItem[data-v-77e85be2]{\n        display: flex; \n        flex-direction: row; \n        padding: 10px;\n}\n.courseRanking__rankItem .position[data-v-77e85be2]{\n        font-size: 28px; \n        color: rgb(132, 132, 132); \n        text-align: right; \n        width: 80px; \n        padding-right: 10px;\n}\n.info[data-v-77e85be2]{\n        font-size: 16px;\n}\n.score[data-v-77e85be2]{\n        font-size: 10px; \n        color: rgb(132, 132, 132);\n}\n.bold[data-v-77e85be2]{\n        font-weight: bold;\n        color: #000;\n}\nli[data-v-77e85be2]:nth-child(3n) {\n        border-bottom: 1px solid #eee;\n}\nli[data-v-77e85be2]:nth-last-child(1){\n        border: none;\n}\n", ""]);
 
 // exports
 
@@ -37065,7 +37112,48 @@ var render = function() {
       _vm.loading
         ? _c("div", [_c("center", [_c("loader")], 1)], 1)
         : _c("div", [
-            _vm._m(0),
+            _c("p", [
+              _vm._v(
+                "\n                Your rankings improve every time you answer a question correctly.\n                Keep learning and earning course points to become one of our top learners!\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c("p", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newScore,
+                    expression: "newScore"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  placeholder:
+                    "Simulate score update (Enter new number and hit enter)"
+                },
+                domProps: { value: _vm.newScore },
+                on: {
+                  keyup: function($event) {
+                    if (
+                      !("button" in $event) &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
+                    }
+                    return _vm.onEnter($event)
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.newScore = $event.target.value
+                  }
+                }
+              })
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
               _c(
@@ -37110,22 +37198,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v(
-        "\n                Your rankings improve every time you answer a question correctly."
-      ),
-      _c("br"),
-      _vm._v(
-        "\n                Keep learning and earning course points to become one of our top learners!\n            "
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
