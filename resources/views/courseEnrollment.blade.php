@@ -20,6 +20,8 @@
                     </div>
                 </div>
 
+                <course-leaderboard url="{!! route('courseEnrollments.leaderboard', $course->slug) !!}"></course-leaderboard>
+{{-- 
                 <div class="card mt-4">
                     <h2 class="card-header">Statistics</h2>
                     <div class="card-body">
@@ -28,6 +30,8 @@
                             Your rankings improve every time you answer a question correctly.
                             Keep learning and earning course points to become one of our top learners!
                         </p>
+
+                        <course-leaderboard url="'{!! route('courseEnrollments.show', $course->slug) !!}'"></course-leaderboard>
                         <div class="row">
                             
                             <div class="col-md-6">
@@ -87,7 +91,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

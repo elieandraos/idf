@@ -14,6 +14,15 @@ class CourseEnrollmentController extends Controller
     {
         $course = $request->course;
         $courseEnrollment = $request->courseEnrollment;
+        
+        return view('courseEnrollment', [
+            'course' => $course
+        ]);
+    }
+
+    public function leaderboard(Request $request, string $slug)
+    {
+        $course = $request->course;
 
         $enrollmentsWorldwide = CourseEnrollment::with('user')
                                             ->where('course_id', $course->id)
@@ -27,13 +36,12 @@ class CourseEnrollmentController extends Controller
 
         $enrollmentsLeaderboardCountry = new CourseEnrollmentLeaderboard($enrollmentsCountry);
         $enrollmentsLeaderboardWorldwide = new CourseEnrollmentLeaderboard($enrollmentsWorldwide);
-        
-        return view('courseEnrollment', [
-            'course' => $course,
+
+        return response()->json([
             'leaderboardWorldwide' => $enrollmentsLeaderboardWorldwide->getLeaderBoard(),
             'leaderboardWorldwideRank' => $enrollmentsLeaderboardWorldwide->getUserRank(),
             'leaderboardCountry' => $enrollmentsLeaderboardCountry->getLeaderBoard(),
-            'leaderboardCountryRank' => $enrollmentsLeaderboardCountry->getUserRank(),
+            'leaderboardCountryRank' => $enrollmentsLeaderboardCountry->getUserRank()
         ]);
     }
 }
