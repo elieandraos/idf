@@ -39,6 +39,6 @@ class CourseTest extends TestCase
     public function it_shows_leaderboard()
     {
         $this->be($this->users[0]);
-        $this->get('/courses/'.$this->courses[0]->slug)->assertSee('Statistics');
+        $this->get('/courses/'.$this->courses[0]->slug)->assertSee('leaderboard');
     }
 }
