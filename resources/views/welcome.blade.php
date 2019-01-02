@@ -84,18 +84,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Welcome to IDF code challenge
-                </div>
-
-                <div class="links">
-                    @auth
-                        <a href="{{ route('home') }}">Dashboard</a>
-                        <form action="{{ route('logout') }}" method="POST" style="display: inline">
-                            <button type="submit">Logout</button>
-                        </form>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                    @endauth
+                    <img src="{!! url('logo.png') !!}" />
                 </div>
             </div>
         </div>
