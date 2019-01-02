@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', '1024M');
 
 use App\Models\Quiz;
 use App\Models\User;
@@ -10,7 +11,7 @@ use App\Models\CourseEnrollment;
 
 class QuizAnswersSeeder extends Seeder
 {
-    private const NUMBER_OF_USERS = 200;
+    private const NUMBER_OF_USERS = 150;
 
     /** @var \Illuminate\Support\Collection */
     private $countryIds;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Country;
 use Illuminate\Database\Seeder;
 
 class CountriesSeeder extends Seeder
@@ -11,7 +12,7 @@ class CountriesSeeder extends Seeder
     public function run(): void
     {
         for ($i = 0; $i < 10; $i++) {
-            factory(\App\Models\Country::class)->create();
+            factory(Country::class)->create();
         }
     }
 }

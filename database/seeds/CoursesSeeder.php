@@ -19,7 +19,7 @@ class CoursesSeeder extends Seeder
         }
     }
 
-    private function addLessonsToCourse(\App\Models\Course $course)
+    private function addLessonsToCourse(Course $course)
     {
         $numberOfLessons = random_int(8, 15);
 
