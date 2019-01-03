@@ -56,7 +56,7 @@ class CourseEnrollmentLeaderboard extends EloquentLeaderboard implements Eloquen
 
 	public function getMiddleChunk() : Collection
 	{
-		$median = $this->getMedian( $this->getUserRank() );
+		$median = $this->getMedian();
 		return $this->getCollection()->whereBetween( 'user_rank', [$median -1, $median + 1]);
 	}
 
@@ -77,14 +77,18 @@ class CourseEnrollmentLeaderboard extends EloquentLeaderboard implements Eloquen
 	 * @param int $userRank 
 	 * @return int
 	 */
-	private function getMedian(int $userRank) : int
+	private function getMedian() : int
 	{
+		$userRank = $this->getUserRank();
+
 		if(!$userRank || !$this->userHasMiddleRank($userRank))
 			return (int) floor($this->getCollection()->count() / 2);
-		else if($this->userHasMiddleRank($userRank) && !$this->userIsAtLastMiddleRank($userRank)) 
-			return $userRank;
-		else
+		else if ($this->userHasMiddleRank($userRank) && $this->userIsAtFirstMiddleRank($userRank))
+			return $userRank + 1;
+		else if ($this->userHasMiddleRank($userRank) && $this->userIsAtLastMiddleRank($userRank))
 			return $userRank - 1;
+		else
+			return $userRank;
 	}
 
 	/**
@@ -111,6 +115,18 @@ class CourseEnrollmentLeaderboard extends EloquentLeaderboard implements Eloquen
 		$bottomRankMax = $this->getCollection()->count() + 1;
 		$bottomRankMin = $bottomRankMax - ( $this->getChunkSize() + 1 );
 		return ( $userRank == $bottomRankMin ) ? true : false;
+	}
+
+	/**
+	 * Check if the user rank is the first one in the middle chunk
+	 * 
+	 * @param int $userRank 
+	 * @return bool
+	 */
+	private function userIsAtFirstMiddleRank(int $userRank) : bool
+	{
+		$middleRankMin = $this->getChunkSize() + 1;
+		return ($userRank == $middleRankMin) ? true : false;
 	}
 
 	/**
