@@ -82,7 +82,7 @@ class CourseEnrollmentLeaderboard extends EloquentLeaderboard implements Eloquen
 		$userRank = $this->getUserRank();
 
 		if(!$userRank || !$this->userHasMiddleRank($userRank))
-			return (int) floor($this->getCollection()->count() / 2);
+			return (int) ceil($this->getCollection()->count() / 2);
 		else if ($this->userHasMiddleRank($userRank) && $this->userIsAtFirstMiddleRank($userRank))
 			return $userRank + 1;
 		else if ($this->userHasMiddleRank($userRank) && $this->userIsAtLastMiddleRank($userRank))
