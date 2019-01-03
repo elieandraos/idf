@@ -41,7 +41,8 @@ class CourseEnrollmentController extends Controller
             'leaderboardWorldwide' => $enrollmentsLeaderboardWorldwide->getLeaderBoard(),
             'leaderboardWorldwideRank' => $enrollmentsLeaderboardWorldwide->getUserRank(),
             'leaderboardCountry' => $enrollmentsLeaderboardCountry->getLeaderBoard(),
-            'leaderboardCountryRank' => $enrollmentsLeaderboardCountry->getUserRank()
+            'leaderboardCountryRank' => $enrollmentsLeaderboardCountry->getUserRank(),
+            'userCountry' => auth()->user()->country->name
         ]);
     }
 

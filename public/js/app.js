@@ -1829,7 +1829,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       loading: true,
       data: {},
-      newScore: null
+      newScore: null,
+      userCountry: 'your country'
     };
   },
   computed: {
@@ -1844,6 +1845,7 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.url).then(function (response) {
         _this.loading = false;
         _this.data = response.data;
+        _this.userCountry = response.data.userCountry;
       }).catch(function (error) {
         console.log(error);
       });
@@ -37165,7 +37167,7 @@ var render = function() {
                     _c("b", [
                       _vm._v("#" + _vm._s(_vm.data.leaderboardCountryRank))
                     ]),
-                    _vm._v(" in your country")
+                    _vm._v(" in " + _vm._s(_vm.userCountry))
                   ]),
                   _vm._v(" "),
                   _c("leaderboard", {
@@ -37184,7 +37186,7 @@ var render = function() {
                     _c("b", [
                       _vm._v("#" + _vm._s(_vm.data.leaderboardWorldwideRank))
                     ]),
-                    _vm._v(" Worldwide")
+                    _vm._v(" worldwide")
                   ]),
                   _vm._v(" "),
                   _c("leaderboard", {

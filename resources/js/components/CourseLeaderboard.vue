@@ -20,7 +20,7 @@
                 </p>
                 <div class="row">
                     <div class="col-md-6">
-                        <h4>You are ranked <b>#{{ data.leaderboardCountryRank }}</b> in your country</h4>
+                        <h4>You are ranked <b>#{{ data.leaderboardCountryRank }}</b> in {{ userCountry }}</h4>
                         <leaderboard :items="data.leaderboardCountry"></leaderboard>
                     </div>
                      <div class="col-md-6">
@@ -61,7 +61,8 @@
         data: () => ({
             loading: true,
             data: {},
-            newScore: null
+            newScore: null,
+            userCountry: 'your country'
         }),
         computed: {
             validScoreSimulation: function() {
@@ -74,6 +75,7 @@
                 .then(response => {
                     this.loading = false;
                     this.data = response.data;
+                    this.userCountry = response.data.userCountry
                 })
                 .catch(function(error){
                     console.log(error);
